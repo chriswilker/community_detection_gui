@@ -3,7 +3,6 @@ import community_detection_gui.src.community_finder as community_finder
 
 import igraph
 import copy
-import community_detection_gui.src.graph_splitter as graph_splitter
 import community_detection_gui.src.graph_comparer as graph_comparer
 
 class TestCommunityFinder(unittest.TestCase):
@@ -24,26 +23,35 @@ class TestCommunityFinder(unittest.TestCase):
         self.graph.vs[5]['vertex attribute'] = 'vertex attribute value'
         self.graph['graph attribute'] = 'graph attribute value'
 
-    def test_split_graph(self):
-        splitter = graph_splitter.GraphSplitter()
-        finder = community_finder.CommunityFinder(splitter)
-        comparer = graph_comparer.GraphComparer()
+        self.positive_graph = copy.copy(self.graph)
+        self.positive_graph.delete_edges([1, 3, 4])
 
-        expected_positive_graph = copy.copy(self.graph)
-        expected_positive_graph.delete_edges([1, 3, 4])
+        self.negative_graph = copy.copy(self.graph)
+        self.negative_graph.delete_edges([0, 2])
 
-        expected_negative_graph = copy.copy(self.graph)
-        expected_negative_graph.delete_edges([0, 2])
+        self.finder = community_finder.CommunityFinder()
+        self.comparer = graph_comparer.GraphComparer()
 
-        finder.graph = self.graph
-        finder.split_graph()
+    def test_signed_modularity_membership_list(self):
+        expected_membership_list = [1, 0, 0, 2, 0, 3, 4]
 
-        self.assertTrue(comparer.equal(
-            finder.positive_graph, expected_positive_graph
-            ))
-        self.assertTrue(comparer.equal(
-            finder.negative_graph, expected_negative_graph
-            ))
+        membership_list = self.finder.membership_list(
+            positive_graph = self.positive_graph, 
+            negative_graph = self.negative_graph, 
+            detection_method = 'Modularity', resolution_parameter = 1.0, 
+            )
+
+        self.assertEqual(expected_membership_list, membership_list)
+
+    def test_unsigned_modularity_membership_list(self):
+        expected_membership_list = [3, 2, 2, 1, 1, 0, 0]
+
+        membership_list = self.finder.membership_list(
+            graph = self.graph, detection_method = 'Modularity', 
+            resolution_parameter = 1.0
+            )
+
+        self.assertEqual(expected_membership_list, membership_list)
 
 if __name__ == '__main__':
     unittest.main()
