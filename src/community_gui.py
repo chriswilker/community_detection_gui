@@ -109,11 +109,22 @@ class CommunityGUI():
             self.load_button.place(x = 5, y = 95)
 
         def apply_settings(self, event=None):
+            print(self.graph)
+            membership = self.membership()
+
             print(self.consider_sign.get())
             print(self.detection_method.get())
             print(float(self.resolution_parameter.get()))
+            print(membership)
             # TODO add link to the next GUI.
             print('next GUI not implemented')
+
+        def membership(self):
+            return self.CommunityFinder.membership_list(
+                self.graph, consider_sign = self.consider_sign.get(),
+                detection_method = self.detection_method.get(),
+                resolution_parameter = float(self.resolution_parameter.get())
+                )
 
         def open_file(self):
             self.graph_file_path = tkFileDialog.askopenfilename(
