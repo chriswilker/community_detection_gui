@@ -1,19 +1,29 @@
 import louvain
 
 class CommunityFinder():
+    def __init__(self, GraphSplitter):
+        self.GraphSplitter = GraphSplitter
+
     def membership_list(
-            self, graph=False, positive_graph=False, negative_graph=False, 
-            detection_method='Modularity', resolution_parameter=1.0
+            self, graph, consider_sign=False, detection_method='Modularity', 
+            resolution_parameter=1.0
             ):
         self.graph = graph
-        self.positive_graph = positive_graph
-        self.negative_graph = negative_graph
+        self.consider_sign = consider_sign
         self.detection_method = detection_method
         self.resolution_parameter = resolution_parameter
 
+        self.split_graph()
         self.find_membership_list()
 
         return self.membership
+
+    def split_graph(self):
+        self.positive_graph = False
+        self.negative_graph = False
+        if self.consider_sign:
+            self.positive_graph = self.GraphSplitter.positive_graph(self.graph)
+            self.negative_graph = self.GraphSplitter.negative_graph(self.graph)
 
     def find_membership_list(self):
         if self.positive_graph or self.negative_graph:
