@@ -3,24 +3,26 @@ import ttk
 import tkFileDialog
 
 class CommunityGUI():
-    def __init__(self, CommunityFinder):
+    def __init__(self, CommunityFinder, PlotGUI):
         self.CommunityFinder = CommunityFinder
+        self.PlotGUI = PlotGUI
 
     def set_graph(self, graph):
         self.graph = graph
 
     def load_gui(self):
         root = Tkinter.Tk()
-        frame = CommunityGUI.CommunityFrame(root, self.CommunityFinder, self.graph)
+        frame = CommunityGUI.CommunityFrame(root, self.CommunityFinder, self.PlotGUI, self.graph)
         root.geometry("260x130")
         root.mainloop()
 
     class CommunityFrame(Tkinter.Frame):
-        def __init__(self, root, CommunityFinder, graph):
+        def __init__(self, root, CommunityFinder, PlotGUI, graph):
             Tkinter.Frame.__init__(self, root)
 
             self.root = root
             self.CommunityFinder = CommunityFinder
+            self.PlotGUI = PlotGUI
             self.graph = graph
 
             self.set_gui_contents()
@@ -109,15 +111,10 @@ class CommunityGUI():
             self.load_button.place(x = 5, y = 95)
 
         def apply_settings(self, event=None):
-            print(self.graph)
-            membership = self.membership()
-
-            print(self.consider_sign.get())
-            print(self.detection_method.get())
-            print(float(self.resolution_parameter.get()))
-            print(membership)
-            # TODO add link to the next GUI.
-            print('next GUI not implemented')
+            self.PlotGUI.set_graph(self.graph)
+            self.PlotGUI.set_consider_sign(self.consider_sign.get())
+            self.PlotGUI.set_membership(self.membership())
+            self.PlotGUI.load_gui()
 
         def membership(self):
             return self.CommunityFinder.membership_list(
@@ -125,13 +122,3 @@ class CommunityGUI():
                 detection_method = self.detection_method.get(),
                 resolution_parameter = float(self.resolution_parameter.get())
                 )
-
-        def open_file(self):
-            self.graph_file_path = tkFileDialog.askopenfilename(
-                filetypes=[('All files', '*')]
-                )
-            if self.graph_file_path:
-                print('file path')
-                print(self.graph_file_path)
-            else:
-                print('no file path!!!')

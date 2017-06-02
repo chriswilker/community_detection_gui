@@ -5,7 +5,7 @@ class GraphPlotter():
         self.VertexColorer = VertexColorer
         self.EdgeColorer = EdgeColorer
 
-    def plot(*arguments, **keyword_arguments):
+    def plot(self, *arguments, **keyword_arguments):
         self.arguments = arguments
         self.keyword_arguments = keyword_arguments
 
