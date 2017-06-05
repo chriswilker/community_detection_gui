@@ -28,4 +28,4 @@ Information
 Notes
 =====
 * If attempting to save a plot, the file extension may need to be manually specified on certain operating systems. For example, when saving a plot, save it as "plot.png" instead of as "plot", even if the type "PNG (\*.png)" is already selected in the file browser. Otherwise the file might not be saved.
-* If you don't have a graph file available but you still want to try out the program, load one of the pickle files in the tests/test_files folder.
+* If you don't have a graph file available but you still want to try out the program, load one of the pickle files in the tests/test_files folder. These files represent very simple graphs. The unsigned file has no "sign" attribute and cannot be used for signed community detection.
