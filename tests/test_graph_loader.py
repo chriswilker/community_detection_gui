@@ -26,19 +26,5 @@ class TestGraphLoader(unittest.TestCase):
 
         self.assertTrue(comparer.equal(compared_graph, test_graph))
 
-    def test_exception_with_incorrect_file_type(self):
-        helper = path_helper.PathHelper()
-        loader = graph_loader.GraphLoader(helper)
-
-        file_directory = helper.path_to_module_directory(test_files)
-        file_path = helper.join_paths(file_directory, 'not a graph.txt')
-
-        value_error_raised = False
-        try:
-            loader.graph_from_file(file_path)
-        except ValueError:
-            value_error_raised = True
-        self.assertTrue(value_error_raised)
-
 if __name__ == '__main__':
     unittest.main()

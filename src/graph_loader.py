@@ -6,9 +6,10 @@ class GraphLoader():
 
     def graph_from_file(self, file_path):
         self.file_path = file_path
-        self.determine_file_type()
-        self.determine_graph()
-        return self.graph
+        # self.determine_file_type()
+        # self.determine_graph()
+        graph = igraph.load(self.file_path)
+        return graph
 
     def determine_file_type(self):
         self.file_type = self.PathHelper.file_extension(self.file_path)
