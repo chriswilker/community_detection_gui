@@ -44,7 +44,7 @@ class CommunityGUI():
             self.consider_sign.set(1)
             self.consider_sign_checkbutton = ttk.Checkbutton(
                 self, text = "consider edge sign", 
-                variable = self.consider_sign, onvalue = 1, offvalue = 0,
+                variable = self.consider_sign, onvalue = 1, offvalue = 0
                 )
             self.consider_sign_checkbutton.place(x=5, y=5)
 
