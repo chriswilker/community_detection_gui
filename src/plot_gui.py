@@ -236,7 +236,7 @@ class PlotGUI():
                 isNumber = True
                 )
             self.set_keyword_argument(
-                'vertex_label_distance', self.vertex_label_distance.get(), 
+                'vertex_label_dist', self.vertex_label_distance.get(), 
                 isNumber = True
                 )
             self.set_keyword_argument(
