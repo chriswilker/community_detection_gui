@@ -224,7 +224,7 @@ class PlotGUI():
 
         def set_keyword_arguments(self):
             self.set_keyword_argument(
-                'vertex_label_size', self.vertex_size.get(),
+                'vertex_label_size', self.vertex_label_size.get(),
                 isNumber = True
                 )
             self.set_keyword_argument('vertex_shape', self.vertex_shape.get())
