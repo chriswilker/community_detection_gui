@@ -21,7 +21,7 @@ class PlotGUI():
             root, self.GraphPlotter, self.graph, self.consider_sign, 
             self.membership
             )
-        root.geometry("300x515")
+        root.geometry("300x695")
         root.mainloop()
 
     class PlotFrame(Tkinter.Frame):
@@ -140,6 +140,22 @@ class PlotGUI():
                 'left margin (pixels)', 5, 455, self.left_margin, 180
                 )
 
+            self.edge_red = Tkinter.StringVar(self.root)
+            self.edge_green = Tkinter.StringVar(self.root)
+            self.edge_blue = Tkinter.StringVar(self.root)
+            self.add_rgb_entries_with_label(
+                'edge color', 5, 485, self.edge_red, self.edge_green, 
+                self.edge_blue, 180
+                )
+
+            self.vertex_red = Tkinter.StringVar(self.root)
+            self.vertex_green = Tkinter.StringVar(self.root)
+            self.vertex_blue = Tkinter.StringVar(self.root)
+            self.add_rgb_entries_with_label(
+                'vertex color', 5, 575, self.vertex_red, self.vertex_green, 
+                self.vertex_blue, 180
+                )
+
         def add_entry_with_label(
                 self, label_text, label_x, label_y, entry_variable, 
                 horizontal_separation, default_entry_value = False
@@ -192,11 +208,32 @@ class PlotGUI():
                 x = self.label_x + self.horizontal_separation, y = self.label_y
                 )
 
+        def add_rgb_entries_with_label(
+                self, label_text, label_x, label_y, red_variable, 
+                green_variable, blue_variable, horizontal_separation
+                ):
+            red_text = label_text + ' R'
+            self.add_entry_with_label(
+                red_text, label_x, label_y, red_variable, horizontal_separation
+                )
+
+            green_text = label_text + ' G'
+            self.add_entry_with_label(
+                green_text, label_x, label_y + 30, green_variable, 
+                horizontal_separation
+                )
+
+            blue_text = label_text + ' B'
+            self.add_entry_with_label(
+                blue_text, label_x, label_y + 60, blue_variable, 
+                horizontal_separation
+                )
+
         def add_plot_button(self):
             plot_button = ttk.Button(
                 self, text = "Show Plot", command = self.plot
                 )
-            plot_button.place(x = 5, y = 485)
+            plot_button.place(x = 5, y = 665)
             
         def plot(self, event=None):
             self.set_arguments()
@@ -231,6 +268,7 @@ class PlotGUI():
             self.set_keyword_argument(
                 'vertex_size', self.vertex_size.get(), isNumber = True
                 )
+
             self.set_keyword_argument(
                 'vertex_label_angle', self.vertex_label_angle.get(), 
                 isNumber = True
@@ -254,12 +292,24 @@ class PlotGUI():
             self.set_keyword_argument('layout', self.layout.get())
             self.set_width_and_height()
             self.set_margins()
-
+            self.set_color(
+                'edge_color', self.edge_red, self.edge_green, self.edge_blue
+                )
+            self.set_color(
+                'vertex_color', self.vertex_red, self.vertex_green, 
+                self.vertex_blue
+                )
+            
         def set_keyword_argument(self, key_name, value, isNumber=False):
+            value = self.value_from_stringvar(value, isNumber=isNumber)
+            if value:
+                self.keyword_arguments[key_name] = value
+
+        def value_from_stringvar(self, value, isNumber=False):
             if value:
                 if isNumber:
                     value = float(value)
-                self.keyword_arguments[key_name] = value
+                return value
 
         def set_width_and_height(self):
             if self.pixel_width.get() and self.pixel_height.get():
@@ -282,12 +332,21 @@ class PlotGUI():
                 margin = [top_margin, right_margin, bottom_margin, left_margin]
                 self.keyword_arguments['margin'] = margin
 
+        def set_color(self, keyword_argument, red_variable, green_variable, blue_variable):
+            red = self.value_from_stringvar(red_variable.get())
+            green = self.value_from_stringvar(green_variable.get())
+            blue = self.value_from_stringvar(blue_variable.get())
+
+            if red and green and blue:
+                color = red + ', ' + green + ', ' + blue
+                self.set_keyword_argument(keyword_argument, color)
+
         def add_save_button(self):
             self.is_graph_saved = 0
             save_button = ttk.Button(
                 self, text = 'Save Plot', command = self.save
                 )
-            save_button.place(x = 100, y = 485)
+            save_button.place(x = 100, y = 665)
 
         def save(self):
             self.is_graph_saved = 1
