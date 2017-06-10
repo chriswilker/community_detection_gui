@@ -21,7 +21,7 @@ class PlotGUI():
             root, self.GraphPlotter, self.graph, self.consider_sign, 
             self.membership
             )
-        root.geometry("300x695")
+        root.geometry("300x725")
         root.mainloop()
 
     class PlotFrame(Tkinter.Frame):
@@ -35,7 +35,7 @@ class PlotGUI():
             self.graph = graph
 
             self.keyword_arguments = {}
-            self.keyword_arguments['consider_sign'] = consider_sign
+            self.keyword_arguments['consider sign'] = consider_sign
             self.keyword_arguments['membership'] = membership
 
             self.set_gui_contents()
@@ -156,6 +156,15 @@ class PlotGUI():
                 self.vertex_blue, 180
                 )
 
+            self.remove_duplicate_edges = Tkinter.IntVar(self.root)
+            self.remove_duplicate_edges.set(0)
+            self.remove_duplicate_edges_checkbutton = ttk.Checkbutton(
+                self, text = "remove duplicate edges", 
+                variable = self.remove_duplicate_edges, onvalue = 1, 
+                offvalue = 0
+                )
+            self.remove_duplicate_edges_checkbutton.place(x = 5, y = 665)
+
         def add_entry_with_label(
                 self, label_text, label_x, label_y, entry_variable, 
                 horizontal_separation, default_entry_value = False
@@ -233,7 +242,7 @@ class PlotGUI():
             plot_button = ttk.Button(
                 self, text = "Show Plot", command = self.plot
                 )
-            plot_button.place(x = 5, y = 665)
+            plot_button.place(x = 5, y = 695)
             
         def plot(self, event=None):
             self.set_arguments()
@@ -299,6 +308,9 @@ class PlotGUI():
                 'vertex_color', self.vertex_red, self.vertex_green, 
                 self.vertex_blue
                 )
+            self.keyword_arguments['remove duplicate edges'] = (
+                self.remove_duplicate_edges.get()
+                )
             
         def set_keyword_argument(self, key_name, value, isNumber=False):
             value = self.value_from_stringvar(value, isNumber=isNumber)
@@ -346,7 +358,7 @@ class PlotGUI():
             save_button = ttk.Button(
                 self, text = 'Save Plot', command = self.save
                 )
-            save_button.place(x = 100, y = 665)
+            save_button.place(x = 100, y = 695)
 
         def save(self):
             self.is_graph_saved = 1
