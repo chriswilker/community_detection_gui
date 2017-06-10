@@ -17,7 +17,7 @@ Using the GUI
 
 * Clone or download the community_detection_gui repository into a directory on your Python 2.7 path.
 * Make sure that the top-level directory is named "community_detection_gui". If the name is different, the package won't work.
-* Open the GUI by running the file open_gui.py in the top-level folder using Python 2.7.
+* Open the GUI by running the file open_gui.py in the top-level directory using Python 2.7.
 
 Important Information
 =====================
