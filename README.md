@@ -4,6 +4,7 @@ Introduction
 * Enables straightforward community detection using a GUI.
 * Uses the [louvain package](https://github.com/vtraag/louvain-igraph) to determine communities.
 * Detailed setup instructions can be found in the [wiki](https://github.com/chriswilker/community_detection_gui/wiki)
+
 Prerequisites
 =============
 
