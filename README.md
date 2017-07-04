@@ -11,7 +11,6 @@ Prerequisites
 * [python-igraph](http://igraph.org/python/)
 * [Pycairo](https://www.cairographics.org/pycairo/)
 * [louvain](https://github.com/vtraag/louvain-igraph)
-* Detailed setup instructions for Linux can be found in the [wiki](https://github.com/chriswilker/community_detection_gui/wiki)
 
 Using the GUI
 =============
