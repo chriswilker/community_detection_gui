@@ -3,7 +3,6 @@ Introduction
 
 * Enables straightforward community detection using a GUI.
 * Uses the [louvain package](https://github.com/vtraag/louvain-igraph) to determine communities.
-* Detailed setup instructions for Linux can be found in the [wiki](https://github.com/chriswilker/community_detection_gui/wiki)
 
 Prerequisites
 =============
@@ -12,6 +11,7 @@ Prerequisites
 * [python-igraph](http://igraph.org/python/)
 * [Pycairo](https://www.cairographics.org/pycairo/)
 * [louvain](https://github.com/vtraag/louvain-igraph)
+* Detailed setup instructions for Linux can be found in the [wiki](https://github.com/chriswilker/community_detection_gui/wiki)
 
 Using the GUI
 =============
