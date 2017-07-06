@@ -3,8 +3,9 @@ import ttk
 import tkFileDialog
 
 class CommunityGUI():
-    def __init__(self, CommunityFinder, PlotGUI):
+    def __init__(self, CommunityFinder, CommunityCSVGenerator, PlotGUI):
         self.CommunityFinder = CommunityFinder
+        self.CommunityCSVGenerator = CommunityCSVGenerator
         self.PlotGUI = PlotGUI
 
     def set_graph(self, graph):
@@ -12,16 +13,23 @@ class CommunityGUI():
 
     def load_gui(self):
         root = Tkinter.Tk()
-        frame = CommunityGUI.CommunityFrame(root, self.CommunityFinder, self.PlotGUI, self.graph)
+        frame = CommunityGUI.CommunityFrame(
+            root, self.CommunityFinder, self.CommunityCSVGenerator,
+            self.PlotGUI, self.graph
+            )
         root.geometry("260x130")
         root.mainloop()
 
     class CommunityFrame(Tkinter.Frame):
-        def __init__(self, root, CommunityFinder, PlotGUI, graph):
+        def __init__(
+                self, root, CommunityFinder, CommunityCSVGenerator, PlotGUI,
+                graph
+                ):
             Tkinter.Frame.__init__(self, root)
 
             self.root = root
             self.CommunityFinder = CommunityFinder
+            self.CommunityCSVGenerator = CommunityCSVGenerator
             self.PlotGUI = PlotGUI
             self.graph = graph
 
@@ -32,8 +40,8 @@ class CommunityGUI():
             self.add_consider_sign_checkbutton()
             self.add_detection_method()
             self.add_resolution_parameter()
-            self.add_apply_button()
-            self.root.bind('<Return>', self.apply_settings)
+            self.add_plot_button()
+            self.add_csv_button()
 
         def set_up_window(self):
             self.root.title("Community Detection")
@@ -43,7 +51,7 @@ class CommunityGUI():
             self.consider_sign = Tkinter.IntVar(self.root)
             self.consider_sign.set(1)
             self.consider_sign_checkbutton = ttk.Checkbutton(
-                self, text = "consider edge sign", 
+                self, text = "consider edge sign",
                 variable = self.consider_sign, onvalue = 1, offvalue = 0
                 )
             self.consider_sign_checkbutton.place(x=5, y=5)
@@ -59,14 +67,14 @@ class CommunityGUI():
             self.detection_method_label_x = 5
             self.detection_method_label_y = 35
             self.detection_method_label.place(
-                    x = self.detection_method_label_x, 
+                    x = self.detection_method_label_x,
                     y = self.detection_method_label_y
                     )
 
         def add_detection_method_optionmenu(self):
             self.detection_method = Tkinter.StringVar(self.root)
             available_detection_methods = [
-                    'Modularity', 'RBConfiguration', 'RBER', 'CPM', 
+                    'Modularity', 'RBConfiguration', 'RBER', 'CPM',
                     'Significance', 'Surprise'
                     ]
             self.detection_method_optionmenu = ttk.OptionMenu(
@@ -74,7 +82,7 @@ class CommunityGUI():
                 *available_detection_methods
                 )
             self.detection_method_optionmenu.place(
-                x = self.detection_method_label_x + 115, 
+                x = self.detection_method_label_x + 115,
                 y = self.detection_method_label_y
                 )
 
@@ -89,7 +97,7 @@ class CommunityGUI():
             self.resolution_parameter_label_x = 5
             self.resolution_parameter_label_y = 65
             self.resolution_parameter_label.place(
-                    x = self.resolution_parameter_label_x, 
+                    x = self.resolution_parameter_label_x,
                     y = self.resolution_parameter_label_y
                     )
 
@@ -100,21 +108,35 @@ class CommunityGUI():
                 self, textvariable = self.resolution_parameter, width = 10
                 )
             self.resolution_parameter_entry.place(
-                    x = self.resolution_parameter_label_x + 130, 
+                    x = self.resolution_parameter_label_x + 130,
                     y = self.resolution_parameter_label_y
                     )
 
-        def add_apply_button(self):
-            self.load_button = ttk.Button(
-                self, text="Apply", command=self.apply_settings
+        def add_plot_button(self):
+            self.plot_button = ttk.Button(
+                self, text="Plot", command=self.plot
                 )
-            self.load_button.place(x = 5, y = 95)
+            self.plot_button.place(x = 5, y = 95)
 
-        def apply_settings(self, event=None):
+        def add_csv_button(self):
+            self.csv_button = ttk.Button(
+                self, text="Save Community CSV", command=self.save_community_csv
+                )
+            self.csv_button.place(x = 95, y = 95)
+
+        def plot(self, event=None):
             self.PlotGUI.set_graph(self.graph)
             self.PlotGUI.set_consider_sign(self.consider_sign.get())
             self.PlotGUI.set_membership(self.membership())
             self.PlotGUI.load_gui()
+
+        def save_community_csv(self, event=None):
+            csv_file_path = (
+                'D:\modules\python\community_detection_gui\community.csv'
+                )
+            self.CommunityCSVGenerator.generate_community_csv(
+                csv_file_path, self.graph, self.membership()
+                )
 
         def membership(self):
             return self.CommunityFinder.membership_list(

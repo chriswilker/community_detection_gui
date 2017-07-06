@@ -9,6 +9,8 @@ import community_detection_gui.src.edge_colorer as edge_colorer
 import community_detection_gui.src.graph_plotter as graph_plotter
 import community_detection_gui.src.plot_gui as plot_gui
 
+import community_detection_gui.src.community_csv_generator as community_csv_generator
+
 import community_detection_gui.src.community_gui as community_gui
 
 import community_detection_gui.src.graph_file_opener as graph_file_opener
@@ -19,13 +21,19 @@ GraphLoader = graph_loader.GraphLoader(PathHelper)
 GraphSplitter = graph_splitter.GraphSplitter()
 CommunityFinder = community_finder.CommunityFinder(GraphSplitter)
 
+CommunityCSVGenerator = community_csv_generator.CommunityCSVGenerator()
+
 VertexColorer = vertex_colorer.VertexColorer()
 EdgeColorer = edge_colorer.EdgeColorer()
 GraphPlotter = graph_plotter.GraphPlotter(VertexColorer, EdgeColorer)
 PlotGUI = plot_gui.PlotGUI(GraphPlotter)
 
-CommunityGUI = community_gui.CommunityGUI(CommunityFinder, PlotGUI)
+CommunityGUI = community_gui.CommunityGUI(
+    CommunityFinder, CommunityCSVGenerator, PlotGUI
+    )
 
-GraphFileOpener = graph_file_opener.GraphFileOpener(GraphLoader, CommunityGUI)
+GraphFileOpener = graph_file_opener.GraphFileOpener(
+    GraphLoader, CommunityGUI
+    )
 
 GraphFileOpener.load_graph()
